@@ -9,17 +9,17 @@
     <h1>Roblox Gamepass Viewer</h1>
     <input type="text" id="username" placeholder="Enter Roblox username">
     <button onclick="fetchGamepasses()">Fetch Gamepasses</button>
-
     <div id="result"></div>
 
     <script>
         async function fetchGamepasses() {
             const username = document.getElementById("username").value;
-            const resUser = await fetch(`https://your-backend-url/api/userid/${username}`);
+
+            const resUser = await fetch(`/api/userid?username=${username}`);
             const userData = await resUser.json();
             const userId = userData.userId;
 
-            const resGamepass = await fetch(`https://your-backend-url/api/gamepasses/${userId}`);
+            const resGamepass = await fetch(`/api/gamepasses?userId=${userId}`);
             const gamepasses = await resGamepass.json();
 
             let html = '';
@@ -34,4 +34,4 @@
         }
     </script>
 </body>
-      </html>
+</html>
