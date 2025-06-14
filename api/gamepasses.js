@@ -11,12 +11,19 @@ module.exports = async function (req, res) {
     }
 
     try {
-        // CSRF token
-        const csrfRes = await axios.post('https://auth.roblox.com/v2/logout', {}, {
-            headers: { Cookie: `.ROBLOSECURITY=${ROBLOSECURITY}` }
-        }).catch(err => err.response);
+        let csrfToken = '';
 
-        const csrfToken = csrfRes.headers['x-csrf-token'];
+        try {
+            await axios.post('https://auth.roblox.com/v2/logout', {}, {
+                headers: { Cookie: `.ROBLOSECURITY=${ROBLOSECURITY}` }
+            });
+        } catch (error) {
+            if (error.response && error.response.headers['x-csrf-token']) {
+                csrfToken = error.response.headers['x-csrf-token'];
+            } else {
+                return res.status(500).json({ error: 'Failed to retrieve CSRF token.' });
+            }
+        }
 
         const gamepassResponse = await axios.get(
             `https://inventory.roblox.com/v1/users/${userId}/assets/34?limit=100&sortOrder=Asc`,
