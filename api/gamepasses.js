@@ -1,6 +1,6 @@
-import axios from 'axios';
+const axios = require('axios');
 
-export default async function handler(req, res) {
+module.exports = async function (req, res) {
     if (req.method !== 'GET') return res.status(405).end();
 
     const { userId } = req.query;
@@ -55,4 +55,4 @@ export default async function handler(req, res) {
         console.error(err.response?.data || err.message);
         res.status(500).json({ error: "Failed to fetch gamepasses" });
     }
-}
+};
