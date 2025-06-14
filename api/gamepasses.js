@@ -35,6 +35,9 @@ module.exports = async function (req, res) {
             }
         );
 
+        // 🔎 Added debug here:
+        console.log("Gamepass Response:", JSON.stringify(gamepassResponse.data));
+
         const items = gamepassResponse.data.data;
 
         const result = await Promise.all(items.map(async (item) => {
