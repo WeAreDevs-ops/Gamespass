@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Roblox Gamepass Viewer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Roblox Gamepass Viewer</h1>
+    <input type="text" id="username" placeholder="Enter Roblox username">
+    <button onclick="fetchGamepasses()">Fetch Gamepasses</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function fetchGamepasses() {
+            const username = document.getElementById("username").value;
+            const resUser = await fetch(`https://your-backend-url/api/userid/${username}`);
+            const userData = await resUser.json();
+            const userId = userData.userId;
+
+            const resGamepass = await fetch(`https://your-backend-url/api/gamepasses/${userId}`);
+            const gamepasses = await resGamepass.json();
+
+            let html = '';
+            gamepasses.forEach(gp => {
+                html += `<div class="card">
+                    <img src="${gp.image}" />
+                    <h3>${gp.name}</h3>
+                    <p>Price: ${gp.price} Robux</p>
+                </div>`;
+            });
+            document.getElementById("result").innerHTML = html;
+        }
+    </script>
+</body>
+      </html>
